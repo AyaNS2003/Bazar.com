@@ -1,3 +1,4 @@
+// frontend service.
 const express = require('express')
 const axios = require('axios')
 
@@ -10,6 +11,7 @@ app.get('/search/:topic', async (req, res) => {
     const topic = req.params.topic
     try {
         const response = await axios.get(`http://catalog:4000/search/${topic}`)
+
         res.status(200).json(response.data)
     } catch (error) {
         console.error('Error fetching search results:', error.message)
@@ -21,6 +23,7 @@ app.get('/info/:book_id', async (req, res) => {
     const bookID = req.params.book_id
     try {
         const response = await axios.get(`http://catalog:4000/info/${bookID}`)
+
         res.status(200).json(response.data)
     } catch (error) {
         console.error('Error fetching search results:', error.message)
@@ -32,6 +35,7 @@ app.post('/purchase/:book_id', async (req, res) => {
     const bookID = req.params.book_id
     try {
         const response = await axios.post(`http://order:3000/purchase/${bookID}`)
+
         res.status(200).json(response.data)
     } catch (error) {
         console.error('Error fetching search results:', error.message)
