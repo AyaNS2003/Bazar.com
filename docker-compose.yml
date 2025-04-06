@@ -1,0 +1,31 @@
+
+services:
+  catalog:
+    build: ./src/catalog
+    ports:
+      - "4000:4000"
+    networks:
+      - proj-net
+
+  order:
+      build: ./src/order
+      ports:
+        - "3000:3000"
+      networks:
+        - proj-net
+      depends_on:
+        - catalog
+
+  frontend:
+    build: ./src/front-end
+    ports:
+      - "5000:5000"
+    networks:
+      - proj-net
+    depends_on:
+      - catalog
+      - order
+
+networks:
+  proj-net:
+    driver: bridge
