@@ -11,10 +11,11 @@ app.post("/purchase/:id",async (req,res)=>{
     var book_id = req.params.id
     
     try{
-        const qry = await axios.get('http://localhost:4000/info/' + book_id) //fetching book
+        const qry = await axios.get('http://catalog:4000/info/' + book_id) //fetching book
         
         var bookData= qry.data;
-        if(!bookData) {// book not found
+        console.log(bookData.data)
+        if(bookData == undefined) {// book not found
             console.log('Book not found in catalog service');
             return res.status(404).json({ message: 'Book not found' });
         }
@@ -29,7 +30,7 @@ app.post("/purchase/:id",async (req,res)=>{
             newQuantity = bookData.quantity - 1
             state = "succeeded"
             
-            const update = await axios.post('http://localhost:4000/update/' + book_id, 
+            const update = await axios.post('http://catalog:4000/update/' + book_id, 
                 {quantity: newQuantity,
                 price: bookPrice})//update book qty
 
@@ -77,6 +78,6 @@ app.post("/purchase/:id",async (req,res)=>{
 app.get("",(req,res)=>{
 })
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Server is running on http://order:${port}`);
 })
