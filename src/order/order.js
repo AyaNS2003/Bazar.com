@@ -70,6 +70,10 @@ app.post("/purchase/:id",async (req,res)=>{
         return response
     }
     catch(err){
+        if (err.response && err.response.status === 404) {
+            console.log('Book not found in catalog service');
+            return res.status(404).json({ message: 'Book not found' });
+        }
         console.error(err.message);
         res.status(500).json({ message: 'Internal server error' });
     }   
