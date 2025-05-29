@@ -51,6 +51,7 @@ app.get('/search/:topic', async (req, res) => {
 
     // If not in cache, fetch from one of catalog service replicas
     try {
+
         const url = getCatalogReplica();
         const response = await axios.get(`${url}/search/${topic}`);
         setCache(`search:${topic}`, response.data);
