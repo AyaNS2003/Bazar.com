@@ -1,5 +1,6 @@
 const axios = require('axios');
 
+// Function to measure time taken for a request
 async function measureTime(label, url, method = 'get') {
     const start = Date.now();
     try {
@@ -15,6 +16,7 @@ async function measureTime(label, url, method = 'get') {
     console.log(`${label}: ${duration} ms`);
 }
 
+// Function to run the cache invalidation test
 async function runTest() {
     console.log('Cache Invalidation Test\n');
 
@@ -25,4 +27,5 @@ async function runTest() {
     await measureTime('after purchase', 'http://localhost:5000/info/1');
 }
 
+// Run the test
 runTest();
