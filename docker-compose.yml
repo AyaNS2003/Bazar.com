@@ -1,20 +1,47 @@
-
 services:
-  catalog:
+  catalog1:
     build: ./src/catalog
     ports:
-      - "4000:4000"
-    networks:
+      - "4001:4000"
+    environment:
+      - REPLICA=catalog1
+    volumes:
+      - ./src/catalog/catalog.json:/app/catalog.json
+    networks: 
       - proj-net
 
-  order:
-      build: ./src/order
-      ports:
-        - "3000:3000"
-      networks:
-        - proj-net
-      depends_on:
-        - catalog
+  catalog2:
+    build: ./src/catalog
+    ports:
+      - "4002:4000"
+    environment:
+      - REPLICA=catalog2
+    volumes:
+      - ./src/catalog/catalog.json:/app/catalog.json
+    networks: 
+      - proj-net
+
+  order1:
+    build: ./src/order
+    ports:
+      - "3001:3000"
+    environment:
+      - REPLICA=order1
+    volumes:
+      - ./src/order/orders.json:/app/orders.json
+    networks: 
+      - proj-net
+
+  order2:
+    build: ./src/order
+    ports:
+      - "3002:3000"
+    environment:
+      - REPLICA=order2
+    volumes:
+      - ./src/order/orders.json:/app/orders.json
+    networks: 
+      - proj-net
 
   frontend:
     build: ./src/front-end
@@ -23,8 +50,10 @@ services:
     networks:
       - proj-net
     depends_on:
-      - catalog
-      - order
+      - catalog1
+      - catalog2
+      - order1
+      - order2
 
 networks:
   proj-net:
