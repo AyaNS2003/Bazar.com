@@ -47,6 +47,7 @@ app.post('/update/:id', async (req, res) => {
 
         fs.writeFileSync('/app/catalog.json', JSON.stringify(catalog, null, 2));
 
+        // update the other catalog replica
         if (!internal) {
             const otherReplica = process.env.REPLICA === 'catalog1'
                 ? 'http://catalog2:4000'
