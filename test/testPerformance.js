@@ -3,6 +3,7 @@ const axios = require('axios');
 const NUM_REQUESTS = 100;
 const URL = 'http://localhost:5000/info/1';
 
+// Function to send a request and measure response time
 async function sendRequest(url) {
     const start = Date.now();
     try {
@@ -13,6 +14,7 @@ async function sendRequest(url) {
     return Date.now() - start;
 }
 
+// Function to test performance with and without cache
 async function testPerformance(label, clearCache = false) {
     let totalTime = 0;
     for (let i = 0; i < NUM_REQUESTS; i++) {
@@ -28,13 +30,13 @@ async function testPerformance(label, clearCache = false) {
         totalTime += time;
     }
     const avgTime = totalTime / NUM_REQUESTS;
-    console.log(`\n${label} - Average Response Time: ${avgTime.toFixed(2)} ms`);
+    console.log(`- Average Response Time: ${avgTime.toFixed(2)} ms`);
 }
 
 async function main() {
     console.log('--- Performance Test Starting ---');
 
-    console.log('\n Without Cache');
+    console.log('Without Cache');
     await testPerformance('Cold', true);
 
     console.log('With Cache');
@@ -43,4 +45,5 @@ async function main() {
     await testPerformance('Warm', false);
 }
 
+// Run the performance test
 main();
