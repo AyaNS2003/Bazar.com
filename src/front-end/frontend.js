@@ -66,6 +66,7 @@ app.get('/info/:book_id', async (req, res) => {
 
     // Check if the book info is already in cache
     if (cache.has(`info:${bookID}`)) {
+        console.log(`[CACHE HIT] info:${bookID}`);
         return res.status(200).json(cache.get(`info:${bookID}`));
     }
 
@@ -74,6 +75,7 @@ app.get('/info/:book_id', async (req, res) => {
         const url = getCatalogReplica();
         const response = await axios.get(`${url}/info/${bookID}`);
         setCache(`info:${bookID}`, response.data);
+        console.log(`[CACHE MISS] info:${bookID}`);
         res.status(200).json(response.data);
     } catch (error) {
         console.error('Error fetching info:', error.message);
@@ -84,8 +86,10 @@ app.get('/info/:book_id', async (req, res) => {
 // Invalidate cache on purchase/update
 app.post('/invalidate/:book_id', (req, res) => {
     const bookID = req.params.book_id;
+    // Invalidate both info and search cache for this book
     cache.delete(`info:${bookID}`);
-    res.status(200).json({ message: `Cache for book ${bookID} invalidated. `});
+    console.log(`[CACHE INVALIDATE] info:${bookID}`);
+    res.status(200).json({ message: `Cache for book ${bookID} invalidated.` });
 });
 
 app.post('/purchase/:book_id', async (req, res) => {
